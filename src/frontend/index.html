@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Howl AI Assistant</title>
+    <style>
+        /* Dark Mode Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        #assistant {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        #chat {
+            flex-grow: 1;
+            overflow-y: auto;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+
+        #userInput {
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 4px;
+            width: calc(100% - 22px);
+            background-color: #2c2c2c;
+            color: #e0e0e0;
+        }
+
+        #sendBtn {
+            padding: 10px;
+            border: none;
+            background-color: #6200ea;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        #sendBtn:hover {
+            background-color: #3700b3;
+        }
+
+        #themeToggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #e0e0e0;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 14px;
+            border-top: 1px solid #333;
+        }
+    </style>
+</head>
+<body>
+    <button id="themeToggle">🌙</button>
+    <div id="assistant">
+        <div id="chat">
+            <!-- Chat messages will appear here -->
+        </div>
+        <input type="text" id="userInput" placeholder="Ask me anything..." />
+        <button id="sendBtn">Send</button>
+    </div>
+    <footer>
+        <p>Made by WolfTech Innovations</p>
+    </footer>
+    <script src="https://js.puter.com/v2/"></script>
+    <script>
+        // Toggle Dark/Light Mode
+        const themeToggle = document.getElementById('themeToggle');
+        let isDarkMode = true;
+
+        themeToggle.addEventListener('click', () => {
+            isDarkMode = !isDarkMode;
+            document.body.style.backgroundColor = isDarkMode ? '#121212' : '#ffffff';
+            document.body.style.color = isDarkMode ? '#e0e0e0' : '#000000';
+            document.getElementById('assistant').style.backgroundColor = isDarkMode ? '#1e1e1e' : '#ffffff';
+            document.getElementById('chat').style.borderBottomColor = isDarkMode ? '#333' : '#ccc';
+            document.getElementById('userInput').style.backgroundColor = isDarkMode ? '#2c2c2c' : '#f0f0f0';
+            document.getElementById('sendBtn').style.backgroundColor = isDarkMode ? '#6200ea' : '#6200ea';
+            document.getElementById('sendBtn').style.borderColor = isDarkMode ? '#333' : '#ccc';
+            themeToggle.textContent = isDarkMode ? '🌙' : '☀️';
+        });
+
+        // Handle User Input and AI Response
+        document.getElementById('sendBtn').addEventListener('click', async () => {
+            const userInput = document.getElementById('userInput').value;
+            if (!userInput.trim()) return;
+
+            // Display user message
+            const userMessage = document.createElement('div');
+            userMessage.textContent = `You: ${userInput}`;
+            document.getElementById('chat').appendChild(userMessage);
+
+            // Clear input field
+            document.getElementById('userInput').value = '';
+
+            // Get AI response
+            const aiResponse = await puter.ai.chat(userInput);
+            const aiMessage = document.createElement('div');
+            aiMessage.textContent = `Howl: ${aiResponse}`;
+            document.getElementById('chat').appendChild(aiMessage);
+
+            // Scroll to the bottom
+            document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
+        });
+    </script>
+</body>
+</html>
